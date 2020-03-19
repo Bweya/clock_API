@@ -10,7 +10,7 @@
     </style>
   </head>
   <body>
-    <p><strong>Timesheets yearly</strong></p>
+    <p><strong>Timesheets monthly</strong></p>
     <table>
       <tr><td><a href='clients.html'>Get clients</a></td></tr>
 
@@ -60,7 +60,7 @@
         var all_count = 1;
         var t;
 
-        $("#display_clock").append('<tr><td><strong>Name</strong></td><td><strong>User ID</strong></td><td><strong>Email</strong></td><td><strong>Description</strong></td><td><strong>Date</strong></td><td><strong>Time Interval</strong></td><td><strong>Start time</strong></td><td><strong>End time</strong></td><td><strong>Tag</strong></td></tr>');
+        $("#display_clock").append('<tr><td><strong>Name</strong></td><td><strong>User ID</strong></td><td><strong>Email</strong></td><td><strong>Description</strong></td><td><strong>Date</strong></td><td><strong>Time Interval</strong></td><td><strong>Start time</strong></td><td><strong>End time</strong></td><td><strong>Tags</strong></td><td><strong>Project ID</strong></td></tr>');
 
         $.ajax({
 
@@ -147,57 +147,92 @@
                                     var lunch = {'5e21e7b6ba05e2483905627b' : 'Lunch'};
                                     var brake = {'5e21e99d5f9e5b0d88337a34' : 'Break'};
 
-                                    if( lunch[ x[i]['tagIds'] ] == 'Lunch' || brake[ x[i]['tagIds'] ] == 'Break' ){
 
-                                      if(lunch[ x[i]['tagIds'] ] == 'Lunch'){
+                                    $.ajax({
 
-                                        //$("#display_clock").append('<p>'+' Description: <strong>'+x[i]['description']+'</strong>, ID: '+x[i]['id']+' Date: '+( x[i]['timeInterval']['start'] ).substring(0,10)+' Time Interval: <strong>'+duration+'</strong>  Start time: <strong>'+start_hour+'</strong>  End time: <strong>'+end_hour+'</strong>  Tag: <strong>'+lunch[ x[i]['tagIds'] ]+'</strong></p>');
+                                            url: 'https://api.clockify.me/api/v1/workspaces/'+($('#workspace').val()).trim()+'/projects',
+                                            beforeSend: function(xhr) {
+                                                 xhr.setRequestHeader("X-Api-Key", ($('#key').val()).trim());
+                                            }, success: function(data){
+                                                client_stringdatas = JSON.stringify(data);
 
-                                        $("#display_clock").append('<tr><td>'+all_count+') <input type="text" name="dName'+all_count+'" value="'+listName[t]+'" /></td><td><input type="text" name="dIDs'+all_count+'" value="'+listIDs[t]+'" /></td><td><input type="text" name="dEmail'+all_count+'" value="'+listEmail[t]+'" /></td><td><input type="text" name="dEscription'+all_count+'" value="'+x[i]['description']+'" /></td><td><input type="text" name="dAte'+all_count+'" value="'+( x[i]['timeInterval']['start'] ).substring(0,10)+'" /></td><td><input type="text" name="dUration'+all_count+'" value="'+duration+'" /></td><td><input type="text" name="startH'+all_count+'" value="'+start_hour+'" /></td><td><input type="text" name="endH'+all_count+'" value="'+end_hour+'" /></td><td><input type="text" name="tAgz'+all_count+'" value="'+lunch[ x[i]['tagIds'] ]+'" /></td></tr>');
-
-                                        all_count+=1;
-
-                                      }
-                                      if(brake[ x[i]['tagIds'] ] == 'Break'){
-
-                                        //$("#display_clock").append('<p>'+' Description: <strong>'+x[i]['description']+'</strong>, ID: '+x[i]['id']+' Date: '+( x[i]['timeInterval']['start'] ).substring(0,10)+' Time Interval: <strong>'+duration+'</strong>  Start time: <strong>'+start_hour+'</strong>  End time: <strong>'+end_hour+'</strong>  Tag: <strong>'+brake[ x[i]['tagIds'] ]+'</strong></p>');
-
-                                        //$("#display_clock").append('<p>Name: <strong>'+listName[t]+'</strong> ID: '+listIDs[t]+' Email: '+listEmail[t]+' Description: <strong>'+x[i]['description']+'</strong>, ID: '+x[i]['id']+' Date: '+( x[i]['timeInterval']['start'] ).substring(0,10)+' Time Interval: <strong>'+duration+'</strong>  Start time: <strong>'+start_hour+'</strong>  End time: <strong>'+end_hour+'</strong>  Tag: <strong>'+lunch[ x[i]['tagIds'] ]+'</strong></p>');
-
-                                        //$("#display_clock").append('<tr><td><strong>'+listName[t]+'</strong></td><td>'+listIDs[t]+'</td><td> '+listEmail[t]+'</td><td><strong>'+x[i]['description']+'</strong></td><td>'+x[i]['id']+'</td><td>'+( x[i]['timeInterval']['start'] ).substring(0,10)+'</td><td><strong>'+duration+'</strong></td><td><strong>'+start_hour+'</strong></td><td><strong>'+end_hour+'</strong></td><td><strong>'+lunch[ x[i]['tagIds'] ]+'</strong></td></tr>');
-
-                                        //$("#display_clock").append('<tr><td><input type="text" value="'+listName[t]+'" /></td><td>'+listIDs[t]+'</td><td> '+listEmail[t]+'</td><td><strong>'+x[i]['description']+'</strong></td><td>'+x[i]['id']+'</td><td>'+( x[i]['timeInterval']['start'] ).substring(0,10)+'</td><td><strong>'+duration+'</strong></td><td><strong>'+start_hour+'</strong></td><td><strong>'+end_hour+'</strong></td><td><strong>'+lunch[ x[i]['tagIds'] ]+'</strong></td></tr>');
-
-                                        //$("#display_clock").append('<tr><td><input type="text" value="'+listName[t]+'" /></td><td><input type="text" value="'+listIDs[t]+'" /></td><td><input type="text" value="'+listEmail[t]+'" /></td><td><input type="text" value="'+x[i]['description']+'" /></td><td><input type="text" value="'+x[i]['id']+'" /></td><td><input type="text" value="'+( x[i]['timeInterval']['start'] ).substring(0,10)+'" /></td><td><input type="text" value="'+duration+'" /></td><td><input type="text" value="'+start_hour+'" /></td><td><input type="text" value="'+end_hour+'" /></td><td><input type="text" value="'+lunch[ x[i]['tagIds'] ]+'" /></td></tr>');
-
-                                        $("#display_clock").append('<tr><td>'+all_count+') <input type="text" name="dName'+all_count+'" value="'+listName[t]+'" /></td><td><input type="text" name="dIDs'+all_count+'" value="'+listIDs[t]+'" /></td><td><input type="text" name="dEmail'+all_count+'" value="'+listEmail[t]+'" /></td><td><input type="text" name="dEscription'+all_count+'" value="'+x[i]['description']+'" /></td><td><input type="text" name="dAte'+all_count+'" value="'+( x[i]['timeInterval']['start'] ).substring(0,10)+'" /></td><td><input type="text" name="dUration'+all_count+'" value="'+duration+'" /></td><td><input type="text" name="startH'+all_count+'" value="'+start_hour+'" /></td><td><input type="text" name="endH'+all_count+'" value="'+end_hour+'" /></td><td><input type="text" name="tAgz'+all_count+'" value="'+lunch[ x[i]['tagIds'] ]+'" /></td></tr>');
-
-                                        all_count+=1;
+                                                var z = JSON.parse(client_stringdatas);
+                                                counterz = z.length;
 
 
+                                                for (var q = 0; q < counterz; q ++){
+
+                                                  if( z[q]['id'] == x[i]['projectId']){
 
 
-                                      }
+                                                            if( lunch[ x[i]['tagIds'] ] == 'Lunch' || brake[ x[i]['tagIds'] ] == 'Break' ){
 
-                                    }
-                                    else{
+                                                              if(lunch[ x[i]['tagIds'] ] == 'Lunch'){
 
-                                      //$("#display_clock").append('<p>'+' Description: <strong>'+x[i]['description']+'</strong>, ID: '+x[i]['id']+' Date: '+( x[i]['timeInterval']['start'] ).substring(0,10)+' Time Interval: <strong>'+duration+'</strong>  Start time: <strong>'+start_hour+'</strong>  End time: <strong>'+end_hour+'</strong>  Tag: <strong>'+x[i]['tagIds']+'</strong></p>');
+                                                                //$("#display_clock").append('<p>'+' Description: <strong>'+x[i]['description']+'</strong>, ID: '+x[i]['id']+' Date: '+( x[i]['timeInterval']['start'] ).substring(0,10)+' Time Interval: <strong>'+duration+'</strong>  Start time: <strong>'+start_hour+'</strong>  End time: <strong>'+end_hour+'</strong>  Tag: <strong>'+lunch[ x[i]['tagIds'] ]+'</strong></p>');
 
-                                      //$("#display_clock").append('<p>Name: <strong>'+listName[t]+'</strong> ID: '+listIDs[t]+' Email: '+listEmail[t]+' Description: <strong>'+x[i]['description']+'</strong>, ID: '+x[i]['id']+' Date: '+( x[i]['timeInterval']['start'] ).substring(0,10)+' Time Interval: <strong>'+duration+'</strong>  Start time: <strong>'+start_hour+'</strong>  End time: <strong>'+end_hour+'</strong>  Tag: <strong>'+lunch[ x[i]['tagIds'] ]+'</strong></p>');
+                                                                $("#display_clock").append('<tr><td>'+all_count+') <input type="text" name="dName'+all_count+'" value="'+listName[t]+'" /></td><td><input type="text" name="dIDs'+all_count+'" value="'+listIDs[t]+'" /></td><td><input type="text" name="dEmail'+all_count+'" value="'+listEmail[t]+'" /></td><td><input type="text" name="dEscription'+all_count+'" value="'+x[i]['description']+'" /></td><td><input type="text" name="dAte'+all_count+'" value="'+( x[i]['timeInterval']['start'] ).substring(0,10)+'" /></td><td><input type="text" name="dUration'+all_count+'" value="'+duration+'" /></td><td><input type="text" name="startH'+all_count+'" value="'+start_hour+'" /></td><td><input type="text" name="endH'+all_count+'" value="'+end_hour+'" /></td><td><input type="text" name="tAgz'+all_count+'" value="'+lunch[ x[i]['tagIds'] ]+'" /></td><td><input type="text" name="project'+all_count+'" value="'+z[q]['name']+'" /></td></tr>');
 
-                                      //$("#display_clock").append('<tr><td><strong>'+listName[t]+'</strong></td><td>'+listIDs[t]+'</td><td> '+listEmail[t]+'</td><td><strong>'+x[i]['description']+'</strong></td><td>'+x[i]['id']+'</td><td>'+( x[i]['timeInterval']['start'] ).substring(0,10)+'</td><td><strong>'+duration+'</strong></td><td><strong>'+start_hour+'</strong></td><td><strong>'+end_hour+'</strong></td><td><strong>'+lunch[ x[i]['tagIds'] ]+'</strong></td></tr>');
+                                                                all_count+=1;
 
-                                      //$("#display_clock").append('<tr><td><input type="text" value="'+listName[t]+'" /></td><td>'+listIDs[t]+'</td><td> '+listEmail[t]+'</td><td><strong>'+x[i]['description']+'</strong></td><td>'+x[i]['id']+'</td><td>'+( x[i]['timeInterval']['start'] ).substring(0,10)+'</td><td><strong>'+duration+'</strong></td><td><strong>'+start_hour+'</strong></td><td><strong>'+end_hour+'</strong></td><td><strong>'+lunch[ x[i]['tagIds'] ]+'</strong></td></tr>');
+                                                              }
+                                                              if(brake[ x[i]['tagIds'] ] == 'Break'){
 
-                                      //$("#display_clock").append('<tr><td><input type="text" value="'+listName[t]+'" /></td><td><input type="text" value="'+listIDs[t]+'" /></td><td><input type="text" value="'+listEmail[t]+'" /></td><td><input type="text" value="'+x[i]['description']+'" /></td><td><input type="text" value="'+x[i]['id']+'" /></td><td><input type="text" value="'+( x[i]['timeInterval']['start'] ).substring(0,10)+'" /></td><td><input type="text" value="'+duration+'" /></td><td><input type="text" value="'+start_hour+'" /></td><td><input type="text" value="'+end_hour+'" /></td><td><input type="text" value="'+lunch[ x[i]['tagIds'] ]+'" /></td></tr>');
+                                                                //$("#display_clock").append('<p>'+' Description: <strong>'+x[i]['description']+'</strong>, ID: '+x[i]['id']+' Date: '+( x[i]['timeInterval']['start'] ).substring(0,10)+' Time Interval: <strong>'+duration+'</strong>  Start time: <strong>'+start_hour+'</strong>  End time: <strong>'+end_hour+'</strong>  Tag: <strong>'+brake[ x[i]['tagIds'] ]+'</strong></p>');
 
-                                      $("#display_clock").append('<tr><td>'+all_count+') <input type="text" name="dName'+all_count+'" value="'+listName[t]+'" /></td><td><input type="text" name="dIDs'+all_count+'" value="'+listIDs[t]+'" /></td><td><input type="text" name="dEmail'+all_count+'" value="'+listEmail[t]+'" /></td><td><input type="text" name="dEscription'+all_count+'" value="'+x[i]['description']+'" /></td><td><input type="text" name="dAte'+all_count+'" value="'+( x[i]['timeInterval']['start'] ).substring(0,10)+'" /></td><td><input type="text" name="dUration'+all_count+'" value="'+duration+'" /></td><td><input type="text" name="startH'+all_count+'" value="'+start_hour+'" /></td><td><input type="text" name="endH'+all_count+'" value="'+end_hour+'" /></td><td><input type="text" name="tAgz'+all_count+'" value="'+lunch[ x[i]['tagIds'] ]+'" /></td></tr>');
+                                                                //$("#display_clock").append('<p>Name: <strong>'+listName[t]+'</strong> ID: '+listIDs[t]+' Email: '+listEmail[t]+' Description: <strong>'+x[i]['description']+'</strong>, ID: '+x[i]['id']+' Date: '+( x[i]['timeInterval']['start'] ).substring(0,10)+' Time Interval: <strong>'+duration+'</strong>  Start time: <strong>'+start_hour+'</strong>  End time: <strong>'+end_hour+'</strong>  Tag: <strong>'+lunch[ x[i]['tagIds'] ]+'</strong></p>');
 
-                                      all_count+=1;
+                                                                //$("#display_clock").append('<tr><td><strong>'+listName[t]+'</strong></td><td>'+listIDs[t]+'</td><td> '+listEmail[t]+'</td><td><strong>'+x[i]['description']+'</strong></td><td>'+x[i]['id']+'</td><td>'+( x[i]['timeInterval']['start'] ).substring(0,10)+'</td><td><strong>'+duration+'</strong></td><td><strong>'+start_hour+'</strong></td><td><strong>'+end_hour+'</strong></td><td><strong>'+lunch[ x[i]['tagIds'] ]+'</strong></td></tr>');
+
+                                                                //$("#display_clock").append('<tr><td><input type="text" value="'+listName[t]+'" /></td><td>'+listIDs[t]+'</td><td> '+listEmail[t]+'</td><td><strong>'+x[i]['description']+'</strong></td><td>'+x[i]['id']+'</td><td>'+( x[i]['timeInterval']['start'] ).substring(0,10)+'</td><td><strong>'+duration+'</strong></td><td><strong>'+start_hour+'</strong></td><td><strong>'+end_hour+'</strong></td><td><strong>'+lunch[ x[i]['tagIds'] ]+'</strong></td></tr>');
+
+                                                                //$("#display_clock").append('<tr><td><input type="text" value="'+listName[t]+'" /></td><td><input type="text" value="'+listIDs[t]+'" /></td><td><input type="text" value="'+listEmail[t]+'" /></td><td><input type="text" value="'+x[i]['description']+'" /></td><td><input type="text" value="'+x[i]['id']+'" /></td><td><input type="text" value="'+( x[i]['timeInterval']['start'] ).substring(0,10)+'" /></td><td><input type="text" value="'+duration+'" /></td><td><input type="text" value="'+start_hour+'" /></td><td><input type="text" value="'+end_hour+'" /></td><td><input type="text" value="'+lunch[ x[i]['tagIds'] ]+'" /></td></tr>');
+
+                                                                $("#display_clock").append('<tr><td>'+all_count+') <input type="text" name="dName'+all_count+'" value="'+listName[t]+'" /></td><td><input type="text" name="dIDs'+all_count+'" value="'+listIDs[t]+'" /></td><td><input type="text" name="dEmail'+all_count+'" value="'+listEmail[t]+'" /></td><td><input type="text" name="dEscription'+all_count+'" value="'+x[i]['description']+'" /></td><td><input type="text" name="dAte'+all_count+'" value="'+( x[i]['timeInterval']['start'] ).substring(0,10)+'" /></td><td><input type="text" name="dUration'+all_count+'" value="'+duration+'" /></td><td><input type="text" name="startH'+all_count+'" value="'+start_hour+'" /></td><td><input type="text" name="endH'+all_count+'" value="'+end_hour+'" /></td><td><input type="text" name="tAgz'+all_count+'" value="'+lunch[ x[i]['tagIds'] ]+'" /></td><td><input type="text" name="project'+all_count+'" value="'+z[q]['name']+'" /></td></tr>');
+
+                                                                all_count+=1;
 
 
-                                    }
+
+
+                                                              }
+
+                                                            }
+                                                            else{
+
+                                                              //$("#display_clock").append('<p>'+' Description: <strong>'+x[i]['description']+'</strong>, ID: '+x[i]['id']+' Date: '+( x[i]['timeInterval']['start'] ).substring(0,10)+' Time Interval: <strong>'+duration+'</strong>  Start time: <strong>'+start_hour+'</strong>  End time: <strong>'+end_hour+'</strong>  Tag: <strong>'+x[i]['tagIds']+'</strong></p>');
+
+                                                              //$("#display_clock").append('<p>Name: <strong>'+listName[t]+'</strong> ID: '+listIDs[t]+' Email: '+listEmail[t]+' Description: <strong>'+x[i]['description']+'</strong>, ID: '+x[i]['id']+' Date: '+( x[i]['timeInterval']['start'] ).substring(0,10)+' Time Interval: <strong>'+duration+'</strong>  Start time: <strong>'+start_hour+'</strong>  End time: <strong>'+end_hour+'</strong>  Tag: <strong>'+lunch[ x[i]['tagIds'] ]+'</strong></p>');
+
+                                                              //$("#display_clock").append('<tr><td><strong>'+listName[t]+'</strong></td><td>'+listIDs[t]+'</td><td> '+listEmail[t]+'</td><td><strong>'+x[i]['description']+'</strong></td><td>'+x[i]['id']+'</td><td>'+( x[i]['timeInterval']['start'] ).substring(0,10)+'</td><td><strong>'+duration+'</strong></td><td><strong>'+start_hour+'</strong></td><td><strong>'+end_hour+'</strong></td><td><strong>'+lunch[ x[i]['tagIds'] ]+'</strong></td></tr>');
+
+                                                              //$("#display_clock").append('<tr><td><input type="text" value="'+listName[t]+'" /></td><td>'+listIDs[t]+'</td><td> '+listEmail[t]+'</td><td><strong>'+x[i]['description']+'</strong></td><td>'+x[i]['id']+'</td><td>'+( x[i]['timeInterval']['start'] ).substring(0,10)+'</td><td><strong>'+duration+'</strong></td><td><strong>'+start_hour+'</strong></td><td><strong>'+end_hour+'</strong></td><td><strong>'+lunch[ x[i]['tagIds'] ]+'</strong></td></tr>');
+
+                                                              //$("#display_clock").append('<tr><td><input type="text" value="'+listName[t]+'" /></td><td><input type="text" value="'+listIDs[t]+'" /></td><td><input type="text" value="'+listEmail[t]+'" /></td><td><input type="text" value="'+x[i]['description']+'" /></td><td><input type="text" value="'+x[i]['id']+'" /></td><td><input type="text" value="'+( x[i]['timeInterval']['start'] ).substring(0,10)+'" /></td><td><input type="text" value="'+duration+'" /></td><td><input type="text" value="'+start_hour+'" /></td><td><input type="text" value="'+end_hour+'" /></td><td><input type="text" value="'+lunch[ x[i]['tagIds'] ]+'" /></td></tr>');
+
+                                                              //for (var q = 0; q < counterz; q ++){
+
+                                                                //if( z[q]['id'] == x[i]['projectId']){
+
+                                                                  $("#display_clock").append('<tr><td>'+all_count+') <input type="text" name="dName'+all_count+'" value="'+listName[t]+'" /></td><td><input type="text" name="dIDs'+all_count+'" value="'+listIDs[t]+'" /></td><td><input type="text" name="dEmail'+all_count+'" value="'+listEmail[t]+'" /></td><td><input type="text" name="dEscription'+all_count+'" value="'+x[i]['description']+'" /></td><td><input type="text" name="dAte'+all_count+'" value="'+( x[i]['timeInterval']['start'] ).substring(0,10)+'" /></td><td><input type="text" name="dUration'+all_count+'" value="'+duration+'" /></td><td><input type="text" name="startH'+all_count+'" value="'+start_hour+'" /></td><td><input type="text" name="endH'+all_count+'" value="'+end_hour+'" /></td><td><input type="text" name="tAgz'+all_count+'" value="'+lunch[ x[i]['tagIds'] ]+'" /></td><td><input type="text" name="project'+all_count+'" value="'+z[q]['name']+'" /></td></tr>');
+
+                                                                //}
+
+
+
+                                                              all_count+=1;
+
+
+                                                            }
+
+                                                        }//End q if
+
+                                                    }//End q for LOOP
+
+                                                },//End inside function
+                                                async : false
+
+                                            });//END inside AJAX
 
                                     //$("#display_clock").append('<p>'+'Description: <strong>'+x[i]['description']+'</strong>, ID: '+x[i]['id']+' Date: '+( x[i]['timeInterval']['start'] ).substring(0,10)+' Time Interval: '+duration+'  Start time: '+start_hour+'  End time: '+end_hour.toString()+':'+end_min+'  Tag: <b>'+x[i]['tagIds']+'</b></p>');
 
