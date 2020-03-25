@@ -5,7 +5,7 @@ DEFINE('user', 'root');
 DEFINE('password', 'testSQL2020');
 //DEFINE('database', 'clockify');
 
-$database = "clockify";
+$database = "clockify_API";
 
 $conn = new mysqli(host, user, password);
 
