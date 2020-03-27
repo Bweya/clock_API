@@ -105,6 +105,14 @@
 
 
               }
+              if($exists == 1){
+
+                $update = "UPDATE $newdate SET Description = '".$des."', Time_Interval = '".$_POST["dUration$j"]."', Start_time = '".$start_hour."', End_time = '".$end_hour."' WHERE UniqueID = '".$_POST["uniqueID$j"]."';";
+
+                mysqli_query($clock_conn, $update);
+
+
+              }
               //echo "<p> Exists: <strong>".$exists."</strong></p>";
               if ($exists == 0){
 
